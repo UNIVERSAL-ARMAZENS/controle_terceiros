@@ -26,8 +26,9 @@ Sistema corporativo para **gestão e validação de prestadores de serviço**, c
 Permite consultar rapidamente, via **CPF**, se um prestador está **liberado** ou **bloqueado**, exibindo **motivos**, **nome** e **empresa** com base em planilha atualizada pela área administrativa.
 
 <p align="center">
-  <img src="static/img/interface.jpg" alt="Interface do Sistema" width="600" height="auto" style="border:2px solid #ccc; border-radius:10px;">
+  <img src="static/img/interface.jpg" alt="Interface do Sistema" width="900" height="auto" style="border:2px solid #ccc; border-radius:10px;">
 </p>
+
 
 ---
 
