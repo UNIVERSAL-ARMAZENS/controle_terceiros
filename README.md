@@ -4,7 +4,7 @@
 
 <p align="center">
   <span style="font-size:56px; font-weight:bold;">🛡️ CONTROLE DE TERCEIROS 🛡️</span><br>
-  <span style="font-size:20px; font-weight:normal; color:gray;">Gestão e validação de prestadores de serviço</span>
+ 
 </p>
 
 
