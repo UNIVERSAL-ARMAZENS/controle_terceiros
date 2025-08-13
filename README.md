@@ -1,9 +1,6 @@
 # 🛡️ Controle de Terceiros
 
-<p align="center">
-  <img src="static/img/logo.jpg" alt="Logo da Empresa" width="200">
-</p>
-
+<img decoding="async" width="180" height="96" src="http://www.uaga.com.br/wp-content/uploads/2020/09/Logo-site.png" class="attachment-large size-large wp-image-1749" alt="" loading="lazy">
 
 
 Sistema corporativo para **gestão de prestadores de serviço**, com foco em **Integração**, **ASO** e **certificados** .  
