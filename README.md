@@ -3,15 +3,17 @@
 </p>
 
 <p align="center">
-  <span style="font-size:48px; font-weight:bold;">🛡️ CONTROLE DE TERCEIROS 🛡️</span>
+  <span style="font-size:56px; font-weight:bold;">🛡️ CONTROLE DE TERCEIROS 🛡️</span><br>
+  <span style="font-size:20px; font-weight:normal; color:gray;">Gestão e validação de prestadores de serviço</span>
 </p>
 
+
 <p align="center">
-  <img src="https://img.shields.io/static/v1?label=STATUS&message=EM%20DESENVOLVIMENTO&color=green&style=for-the-badge" alt="Status">
-  <img src="https://img.shields.io/badge/Python-3.13.5-blue?style=for-the-badge&logo=python" alt="Python">
-  <img src="https://img.shields.io/badge/Flask-Framework-black?style=for-the-badge&logo=flask" alt="Flask">
-  <img src="https://img.shields.io/github/license/SEU-USUARIO/controle_terceiros?style=for-the-badge" alt="Licença">
-  <img src="https://img.shields.io/github/last-commit/SEU-USUARIO/controle_terceiros?style=for-the-badge" alt="Último commit">
+  <img src="https://img.shields.io/static/v1?label=STATUS&message=EM%20DESENVOLVIMENTO&color=green&style=for-the-badge">
+  <img src="https://img.shields.io/badge/Python-3.13.5-blue?style=for-the-badge&logo=python">
+  <img src="https://img.shields.io/badge/Flask-Framework-black?style=for-the-badge&logo=flask">
+  <img src="https://img.shields.io/github/last-commit/SEU-USUARIO/controle_terceiros?style=for-the-badge">
+  <img src="https://img.shields.io/badge/Planilha-Atualizada-orange?style=for-the-badge">
 </p>
 
 
@@ -26,8 +28,9 @@ Sistema corporativo para **gestão e validação de prestadores de serviço**, c
 Permite consultar rapidamente, via **CPF**, se um prestador está **liberado** ou **bloqueado**, exibindo **motivos**, **nome** e **empresa** com base em planilha atualizada pela área administrativa.
 
 <p align="center">
-  <img src="static/img/interface.jpg" alt="Interface do Sistema" width="900" height="auto" style="border:2px solid #ccc; border-radius:10px;">
+  <img src="static/img/interface.jpg" alt="Interface do Sistema" width="1000" height="auto" style="border:3px solid #ccc; border-radius:15px; box-shadow: 0 4px 15px rgba(0,0,0,0.2);">
 </p>
+
 
 
 ---
