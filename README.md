@@ -17,14 +17,7 @@
 
 ---
 
-## 📑 Índice
-- [Descrição do Projeto](#descrição-do-projeto)
-- [Funcionalidades](#funcionalidades)
-- [Acesso ao Projeto](#acesso-ao-projeto)
-- [Tecnologias Utilizadas](#tecnologias-utilizadas)
-- [Licença](#licença)
 
----
 
 
 
