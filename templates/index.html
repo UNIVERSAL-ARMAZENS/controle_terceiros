@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Sistema de Liberação para Fornecedores </title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Verificação de CPF</h1>
+
+        {% if not status %}
+      
+        <form method="POST">
+            <label for="cpf">CPF:</label>
+            <input type="text" name="cpf" id="cpf" required>
+            <button type="submit" id="meuBotao">Verificar</button>
+        </form>
+        {% endif %}
+
+        {% if status %}
+            {% if cpf %}
+             <div class="campo">
+               <label>CPF:</label>
+               <input type="text" id="cpf-display" value="{{ cpf }}" readonly>
+             </div>
+            {% endif %}
+        
+            {% if nome %}
+            <div class="campo">
+                <label>Nome:</label>
+                 <input type="text" id="nome-display" value="{{ nome }}" readonly>
+            </div>
+            {% endif %}
+
+            {% if empresa %}
+            <div class="campo">
+                <label>Empresa:</label>
+               <input type="text" id="empresa-display" value="{{ empresa }}" readonly>
+            </div>
+            {% endif %}
+            <div class="motivo">
+                {% if bloqueios %}
+                   <p style="color:red;"><strong>Motivos:</strong> {{ ', '.join(bloqueios) }}</p>
+
+                   
+                {% endif %}
+
+                {% if status.startswith('LIBERADO') %}
+                    <button type="button" class="liberado" style="display: block; margin: 20px auto;">LIBERADO!</button>
+                {% elif status.startswith('BLOQUEADO') %}
+                  <button type="button" class="bloqueado" style="display: block; margin: 20px auto;">BLOQUEADO!</button>
+
+                {% endif %}
+            </div>
+
+            <p style="color:red;">Entrar em contato com a Segurança do trabalho para mais informações (Ramal 103).</p>
+
+            <form method="GET">
+                <button type="submit" style="display: block; margin: 20px auto">Verificar outro CPF</button>
+            </form>
+        {% endif %}
+    </div>
+
+    <footer>
+        <img src="http://www.uaga.com.br/wp-content/uploads/2020/09/Logo-site.png" alt="Logo">
+    </footer>
+</body>
+</html>
+
+
+<style>
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+   
+body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(135deg, #002F6C 0%, #001F44 100%);
+      background-attachment: fixed;
+      color: #1e293b;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+    }
+     .page-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+      
+    }
+
+.container {
+           background-color: rgb(240, 242, 243);
+            padding: 40px 40px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 500px;
+            
+        }
+
+h1 {
+     font-size: 2rem;
+      color: rgb(6, 31, 116);
+      font-weight: 600;
+      text-align: center;
+}
+.campo {
+    margin-bottom: 15px;
+    display: flex;
+    flex-direction: column; /* faz o label ficar em cima */
+}
+
+.campo input[type="text"] {
+    width: 100%;              /* ocupa toda a largura do container */
+    min-width: 250px;         /* evita que fique minúsculo */
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 1rem;
+    white-space: nowrap;      /* impede quebra de linha */
+    overflow-x: auto;         /* permite scroll horizontal caso estoure */
+}
+
+
+button {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+button:hover {
+    background-color: #218838;
+}
+.bloqueado {
+    background-color: #dc3545;
+    color: white;
+}
+.bloqueado:hover {
+    background-color: #c82333;
+}
+.liberado {
+    background-color: #28a745;
+    color: white;
+}
+.liberado:hover {
+    background-color: #218838;
+}
+footer {
+    text-align: center;
+    margin-top: 20px;
+}
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+</style>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    const cpfInput = document.getElementById("cpf");
+    cpfInput.addEventListener("input", () => {
+        let value = cpfInput.value.replace(/\D/g, ""); 
+        value = value.padEnd(11, "_"); 
+        cpfInput.value = `${value.substring(0, 3)}.${value.substring(3, 6)}.${value.substring(6, 9)}-${value.substring(9, 11)}`;
+    });
+});
+</script>

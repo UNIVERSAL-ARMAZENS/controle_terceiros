@@ -1,0 +1,125 @@
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #d9ecfd;
+    font-family: Arial, sans-serif;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    flex-direction: column;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    max-width: 800px;
+    padding: 20px;
+    box-sizing: border-box;
+}
+.tela {
+    width: 100%;
+    max-width: 600px;
+    padding: 20px;
+    text-align: center;
+}
+
+.campo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 40%;
+    max-width: 800px;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 5px;
+    color: #333;
+    font-size: 18px;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+
+}
+
+input {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    background-color: white;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.2s;
+
+}
+
+.motivo {
+    display: flex;
+    flex-direction: column;
+    align-items: center; 
+    margin-top: 20px;
+}
+
+button.bloqueado {
+    background-color: #ff9999;
+    color: red;
+    font-weight: bold;
+    padding: 12px;
+    border: 2px solid red;
+    border-radius: 6px;
+    font-size: 16px;
+    cursor: default;
+}
+
+button.liberado {
+    background-color: #ccffcc;
+    color: green;
+    font-weight: bold;
+    padding: 12px;
+    border: 2px solid green;
+    border-radius: 6px;
+    font-size: 16px;
+    cursor: default;
+}
+
+
+.logo {
+    text-align: center;
+    margin-top: 40px;
+}
+
+.logo img {
+    height: 80px;
+    opacity: 0.95;
+}
+button {
+  padding: 12px;
+  font-weight: bold;
+  border-radius: 6px;
+  margin-bottom: 2em;
+  margin-top: 2em;
+  margin-left: 38%;
+  background-color: #11ffee00
+}
+button:hover {
+    background-color: #11ffee33;
+    transition: background-color 0.3s ease;
+}
+form button[type="submit"]:not(.liberado):not(.bloqueado) {
+    background-color: #ccc;
+    color: #000;
+    border: none;
+}
