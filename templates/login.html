@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login - Universal Armazéns Alfandegados</title>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
+
+    :root {
+      --azul-uaga: #002F6C;
+      --azul-hover: #001F44;
+      --cinza-bg: #F5F7FA;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+   
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(135deg, #002F6C 0%, #001F44 100%);
+      background-attachment: fixed;
+      color: #1e293b;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+    }
+    .page-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .title-h1 {
+      font-size: 2rem;
+      color: white;
+      font-weight: 700;
+      text-align: center;
+      text-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+    }
+
+
+    .login-container {
+      background-color: #fff;
+      padding: 40px 32px;
+      border-radius: 12px;
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.15);
+      width: 100%;
+      max-width: 380px;
+      text-align: center;
+      animation: fadeIn 0.5s ease-in-out;
+      border-top: 5px solid var(--azul-uaga);
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .login-container img {
+      width: 90px;
+      margin-bottom: 20px;
+    }
+    
+
+    h1 {
+      font-size: 1.8rem;
+      color: var(--azul-uaga);
+      margin-bottom: 24px;
+      font-weight: 600;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    input {
+      padding: 12px 14px;
+      border-radius: 8px;
+      border: 1px solid #cbd5e1;
+      background-color: #f9fafb;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+    }
+
+    input:focus {
+      border-color: var(--azul-uaga);
+      background-color: #fff;
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(0, 47, 108, 0.1);
+    }
+
+    .show-password {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      font-size: 0.9rem;
+      color: #475569;
+      gap: 6px;
+      margin-top: -6px;
+    }
+
+    button {
+      padding: 12px;
+      background-color: var(--azul-uaga);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: var(--azul-hover);
+    }
+
+    .error {
+      color: #dc2626;
+      font-size: 0.95rem;
+      margin-bottom: 10px;
+    }
+
+    @media (max-width: 480px) {
+      .login-container {
+        padding: 30px 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page-wrapper">
+    <h1 class="title-h1">Sistema de Liberação para Terceiros</h1>
+  <div class="login-container">
+    <img src="http://www.uaga.com.br/wp-content/uploads/2020/09/Logo-site.png" alt="Logo UAGA" />
+    <h1>Login</h1>
+    {% if erro %}
+      <p class="error">{{ erro }}</p>
+    {% endif %}
+    <form method="POST">
+    <input type="text" name="username" placeholder="Usuário" required />
+    <input type="password" name="password" placeholder="Senha" id="senha" required />
+
+      <label class="show-password">
+        <input type="checkbox" onclick="toggleSenha()" /> Mostrar senha
+      </label>
+      <button type="submit">Entrar</button>
+    </form>
+  </div>
+{% if msg %}
+<p style="color:red">{{ msg }}</p>
+{% endif %}
+
+  <script>
+    function toggleSenha() {
+      const senha = document.getElementById("senha");
+      senha.type = senha.type === "password" ? "text" : "password";
+    }
+  </script>
+</body>
+</html>

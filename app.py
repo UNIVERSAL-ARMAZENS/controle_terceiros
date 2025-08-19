@@ -1,13 +1,76 @@
+from flask import Flask, request, jsonify, render_template, redirect, url_for
+from flask_sqlalchemy import SQLAlchemy
+from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required, current_user
+from flask_admin import Admin, AdminIndexView
+from flask_admin.contrib.sqla import ModelView
+from flask_admin.form import rules
+from wtforms import PasswordField
+from werkzeug.security import generate_password_hash, check_password_hash
 import pandas as pd
-from flask import Flask, request, jsonify, render_template
+import click
+from flask.cli import with_appcontext
 
-
+# --- App e DB ---
 app = Flask(__name__)
+app.config['SECRET_KEY'] = 'supersecretkey'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app.db'
+db = SQLAlchemy(app)
 
-df = pd.read_excel('Integração, ASO e Certificados -Terceiros - Atualizada.xlsx',
-                   sheet_name='Dados', header=1, engine='openpyxl')
+# --- Login ---
+login_manager = LoginManager(app)
+login_manager.login_view = 'login'
 
+# --- User model ---
+class User(db.Model, UserMixin):
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(150), unique=True, nullable=False)
+    password_hash = db.Column(db.String(256), nullable=False)
+    is_admin = db.Column(db.Boolean, default=False)
 
+    def set_password(self, password):
+        self.password_hash = generate_password_hash(password)
+    
+    def check_password(self, password):
+        return check_password_hash(self.password_hash, password)
+
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(int(user_id))
+
+# --- Admin ---
+class MyAdminIndexView(AdminIndexView):
+    def is_accessible(self):
+        return current_user.is_authenticated and current_user.is_admin
+    def inaccessible_callback(self, name, **kwargs):
+        return redirect(url_for('login'))
+
+class UserAdmin(ModelView):
+    column_exclude_list = ['password_hash']
+    form_excluded_columns = ['password_hash']
+    form_extra_fields = {
+        'password': PasswordField('Senha')
+    }
+
+    def is_accessible(self):
+        return current_user.is_authenticated and current_user.is_admin
+
+    def inaccessible_callback(self, name, **kwargs):
+        return redirect(url_for('login'))
+
+    def on_model_change(self, form, model, is_created):
+        if form.password.data:
+            model.set_password(form.password.data)
+
+admin = Admin(app, index_view=MyAdminIndexView())
+admin.add_view(UserAdmin(User, db.session))
+
+# --- Dados Excel ---
+df = pd.read_excel(
+    'Integração, ASO e Certificados -Terceiros - Atualizada.xlsx',
+    sheet_name='Dados', header=1, engine='openpyxl'
+)
+
+# --- Funções ---
 def limpar_status(valor):
     if pd.isna(valor):
         return 'OK'  
@@ -15,12 +78,13 @@ def limpar_status(valor):
     if valor in ['?', '', 'N/A']:
         return 'OK'
     return valor
+
 def limpar_cpf(cpf):
     return ''.join(filter(str.isdigit, str(cpf)))
 
 def formatar_cpf(cpf):
-    cpf = ''.join(filter(str.isdigit, str(cpf)))  
-    cpf = cpf.ljust(11, "_") 
+    cpf = ''.join(filter(str.isdigit, str(cpf)))
+    cpf = cpf.ljust(11, "_")
     return f"{cpf[0:3]}.{cpf[3:6]}.{cpf[6:9]}-{cpf[9:11]}"
 
 def verificar_status_cpf(cpf):
@@ -30,38 +94,51 @@ def verificar_status_cpf(cpf):
     
     nome = linha['Nome'].values[0] if 'Nome' in linha.columns else ''
     empresa = linha['Empresa'].values[0] if 'Empresa' in linha.columns else ''
-
-
     status_aso = limpar_status(linha['Status'].values[0])
     status_nr1 = str(linha['Status.1'].values[0]).strip().upper()  
     status_pgr = limpar_status(linha['STATUS'].values[0])
     status_pcms = limpar_status(linha['STATUS.1'].values[0])
 
     bloqueios = []
-
     if status_aso in ['VENCIDO','', '?']:
         bloqueios.append("ASO Vencido")
-   
     if status_nr1 in ['VENCIDO','BLOQUEADO', '?', '']:
         bloqueios.append("Integração de Seguraça - NR1 Vencido ou Não Realizado")
-
-
     if status_pgr in ['VENCIDO', '', '?']:
         bloqueios.append("PGR Vencido")
-
-    
     if status_pcms in ['VENCIDO', '', '?']:
         bloqueios.append("PCMSO Vencido")
 
     if bloqueios:
-     return f"BLOQUEADO por: {', '.join(bloqueios)}", bloqueios, nome, empresa
+        return f"BLOQUEADO por: {', '.join(bloqueios)}", bloqueios, nome, empresa
     else:
-      return "LIBERADO", [], nome, empresa
+        return "LIBERADO", [], nome, empresa
 
+# --- Rotas ---
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    msg = None
+    if request.method == 'POST':
+        username = request.form.get('username')
+        password = request.form.get('password')
+        user = User.query.filter_by(username=username).first()
+        if user and user.check_password(password):
+            login_user(user)
+            return redirect(url_for('index'))
+        elif not user:
+            msg = "Usuário não encontrado"
+        else:
+            msg = "Senha incorreta"
+    return render_template('login.html', msg=msg)
 
+@app.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    return redirect(url_for('login'))
 
-    
 @app.route('/', methods=['GET', 'POST'])
+@login_required
 def index():
     status = None
     bloqueios = []
@@ -75,10 +152,21 @@ def index():
         status, bloqueios, nome, empresa = verificar_status_cpf(cpf)
 
     cpf_formatado = formatar_cpf(cpf)
-    return render_template("index.html", cpf=cpf_formatado, nome=nome, empresa=empresa, status=status, bloqueios=bloqueios)
+    return render_template("index.html", usuario=current_user, cpf=cpf_formatado, nome=nome, empresa=empresa, status=status, bloqueios=bloqueios)
 
-
-      
-
-if __name__ == '__main__':
+if __name__ == "__main__":
+    with app.app_context():
+        db.create_all()  
     app.run(debug=True)
+
+
+@app.cli.command("create-admin")
+@click.argument("username")
+@click.argument("password")
+@with_appcontext
+def create_admin(username, password):
+    admin = User(username=username, is_admin=True)
+    admin.set_password(password)
+    db.session.add(admin)
+    db.session.commit()
+    click.echo(f"Admin {username} criado com sucesso!")

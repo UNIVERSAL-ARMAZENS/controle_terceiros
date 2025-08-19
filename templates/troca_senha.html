@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Trocar Senha - Universal Armazéns Alfandegados</title>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
+
+    :root {
+      --azul-uaga: #002F6C;
+      --azul-hover: #001F44;
+      --cinza-bg: #F5F7FA;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(135deg, #002F6C 0%, #001F44 100%);
+      background-attachment: fixed;
+      color: #1e293b;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      flex-direction: column;
+    }
+
+    .titulo {
+      color: white;
+      font-size: 1.8rem;
+      margin-bottom: 24px;
+      font-weight: 600;
+      text-align: center;
+    }
+
+    .senha-container {
+      background-color: #fff;
+      padding: 40px 32px;
+      border-radius: 12px;
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.15);
+      width: 100%;
+      max-width: 420px;
+      text-align: center;
+      border-top: 5px solid var(--azul-uaga);
+      animation: fadeIn 0.5s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    h2 {
+      font-size: 1.6rem;
+      color: var(--azul-uaga);
+      margin-bottom: 20px;
+      font-weight: 600;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    input {
+      padding: 12px 14px;
+      border-radius: 8px;
+      border: 1px solid #cbd5e1;
+      background-color: #f9fafb;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+    }
+
+    input:focus {
+      border-color: var(--azul-uaga);
+      background-color: #fff;
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(0, 47, 108, 0.1);
+    }
+
+    button {
+      padding: 12px;
+      background-color: var(--azul-uaga);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: var(--azul-hover);
+    }
+
+    .error {
+      color: #dc2626;
+      font-size: 0.95rem;
+      margin-bottom: 10px;
+    }
+
+    @media (max-width: 480px) {
+      .senha-container {
+        padding: 30px 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="titulo">Trocar Senha</div>
+
+  <div class="senha-container">
+    <h2>Alterar Credenciais</h2>
+    {% if erro %}
+      <p class="error">{{ erro }}</p>
+    {% endif %}
+    <form method="POST">
+      <input type="password" name="senha_atual" placeholder="Senha atual" required />
+      <input type="password" name="nova_senha" placeholder="Nova senha" required />
+      <input type="password" name="confirmar_senha" placeholder="Confirmar nova senha" required />
+      <button type="submit">Atualizar Senha</button>
+    </form>
+  </div>
+
+</body>
+</html>
