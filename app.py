@@ -19,8 +19,8 @@ def limpar_cpf(cpf):
     return ''.join(filter(str.isdigit, str(cpf)))
 
 def formatar_cpf(cpf):
-    cpf = ''.join(filter(str.isdigit, str(cpf)))  # remove qualquer caractere não numérico
-    cpf = cpf.ljust(11, "_")  # completa com underscores até ter 11 caracteres
+    cpf = ''.join(filter(str.isdigit, str(cpf)))  
+    cpf = cpf.ljust(11, "_") 
     return f"{cpf[0:3]}.{cpf[3:6]}.{cpf[6:9]}-{cpf[9:11]}"
 
 def verificar_status_cpf(cpf):
