@@ -168,7 +168,7 @@ def logout():
     logout_user()
     flash("Logout realizado com sucesso.", "success")
     return redirect(url_for('login'))
-
+#TEST
 @app.route('/', methods=['GET', 'POST'])
 @login_required
 def index():
