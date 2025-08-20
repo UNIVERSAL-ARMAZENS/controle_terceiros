@@ -6,17 +6,25 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    
-  <div class="top-bar">
-    {% if usuario and usuario.nivel == 'admin' %}
-      <a href="{{ url_for('admin.index') }}" class="top-btn">
-        <i class="fas fa-tools"></i> Admin
-      </a>
+{% if current_user.is_authenticated %}
+    {% if current_user.is_admin %}
+        <a href="{{ url_for('admin.index') }}" class="top-btn">Admin</a>
     {% endif %}
-    <a href="{{ url_for('logout') }}" class="top-btn logout">
-      <i class="fas fa-sign-out-alt"></i> Sair
-    </a>
-  </div>
+{% else %}
+    <p style="color: red;">Não está logado</p>
+{% endif %}
+
+
+  <a href="{{ url_for('logout') }}" class="top-btn logout">
+    <i class="fas fa-sign-out-alt"></i> Sair
+  </a>
+</div>
+
+  <a href="{{ url_for('logout') }}" class="top-btn logout">
+    <i class="fas fa-sign-out-alt"></i> Sair
+  </a>
+</div>
+
     <div class="container">
         <h1>Verificação de CPF</h1>
 
@@ -90,15 +98,13 @@
    
 body {
    
-      padding-top: 60px; 
-      font-family: 'Inter', sans-serif;
-      background: linear-gradient(135deg, #002F6C 0%, #001F44 100%);
-      background-attachment: fixed;
-      color: #1e293b;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 100vh;
+        padding-top: 60px; 
+        font-family: 'Inter', sans-serif;
+        background: linear-gradient(135deg, #002F6C 0%, #001F44 100%);
+        background-attachment: fixed;
+        color: #1e293b;
+        min-height: 100vh;
+        margin: 0;
     }
      .page-wrapper {
       display: flex;
@@ -210,6 +216,18 @@ img {
 
 .logout:hover {
     background-color: #c82333;
+}
+.top-bar {
+    width: 100%;
+    background-color: #001F44;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 9999
 }
 
 
