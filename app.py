@@ -10,13 +10,27 @@ import pandas as pd
 import click
 from flask.cli import with_appcontext
 from flask_migrate import Migrate
-
+import os
 # --- App e DB ---
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'supersecretkey'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app.db'
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
+import os
+
+EXCEL_FILENAME = "Integração, ASO e Certificados -Terceiros - Atualizada.xlsx"
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
+# variável de ambiente para o caminho do Excel
+#setx EXCEL_PATH "\\servidor\rede\pasta\Integração.xlsx"
+EXCEL_PATH = os.environ.get(
+    "EXCEL_PATH",  
+    os.path.join(BASE_DIR, EXCEL_FILENAME)  
+)
+
+
 
 # --- Login ---
 login_manager = LoginManager(app)
@@ -35,7 +49,7 @@ class User(db.Model, UserMixin):
      
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
-
+#load id
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
@@ -70,13 +84,11 @@ class UserAdmin(ModelView):
 admin = Admin(app, index_view=MyAdminIndexView())
 admin.add_view(UserAdmin(User, db.session))
 
-# --- Funções utilitárias ---
+#carega o DataFrame do Excel
 def get_df():
-    return pd.read_excel(
-        'Integração, ASO e Certificados -Terceiros - Atualizada.xlsx',
-        sheet_name='Dados', header=1, engine='openpyxl'
-    )
+    return pd.read_excel(EXCEL_PATH, sheet_name='Dados', header=1, engine='openpyxl')
 
+# --- Funções de limpeza e verificação ---
 def limpar_status(valor):
     if pd.isna(valor):
         return 'OK'
@@ -140,7 +152,7 @@ def login():
             return redirect(url_for('index'))
 
     return render_template('login.html')
-
+# --- Rota para alterar senha ---
 @app.route('/change-password', methods=['GET', 'POST'])
 @login_required
 def change_password():
@@ -161,7 +173,7 @@ def change_password():
             return redirect(url_for('index'))
 
     return render_template('change_password.html')
-
+# --- Rota para logout ---
 @app.route('/logout')
 @login_required
 def logout():
